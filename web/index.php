@@ -1,4 +1,9 @@
 <?php
+/**
+ * Author: Fredrik Enestad @ Devloop AB (fredrik@devloop.se)
+ * Date: 2012-06-19
+ * Time: 19:16
+ */
 
 require_once __DIR__.'/../vendor/autoload.php';
 
