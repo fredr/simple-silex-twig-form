@@ -25,26 +25,63 @@ class ProgramController extends ControllerBase
     public function AddProgram() {
         $data = $this->app["request"];
 
+        $isXML = false;
+
         $program = new Program($this->app["db"]);
 
-        $program->date          = $data->get("date");
-        $program->time          = $data->get("time");
-        $program->leadText      = $data->get("leadText");
-        $program->name          = $data->get("name");
-        $program->bLine         = $data->get("b-line");
-        $program->synopsis      = $data->get("synopsis");
-        $program->url           = $data->get("url");
+        if (0 === strpos($data->headers->get('Content-Type'), 'application/x-www-form-urlencoded')) {
+
+            // posted from a html form
+
+            $program->date          = $data->get("date");
+            $program->time          = $data->get("time");
+            $program->leadText      = $data->get("leadText");
+            $program->name          = $data->get("name");
+            $program->bLine         = $data->get("b-line");
+            $program->synopsis      = $data->get("synopsis");
+            $program->url           = $data->get("url");
+
+        } elseif (0 === strpos($data->headers->get('Content-Type'), 'text/xml')) {
+
+            // posted as xml
+
+            $xml = (array)simplexml_load_string($data->getContent());
+
+            $program->date          = $xml["date"];
+            $program->time          = $xml["start_time"];
+            $program->leadText      = $xml["leadtext"];
+            $program->name          = $xml["name"];
+            $program->bLine         = $xml["b-line"];
+            $program->synopsis      = $xml["synopsis"];
+            $program->url           = $xml["url"];
+
+            $isXML = true;
+
+        }
+
 
         // check for errors
         $errors = $program->validate();
 
         // show the form again if there where errors (and show what the errors where)
         if (count($errors) > 0) {
-            return $this->app['twig']->render('index.html.twig', array("errors" => $errors, "program" => $program));
+            if ($isXML) {
+                return "There where errors: ".print_r($errors,true);
+            } else {
+                return $this->app['twig']->render('index.html.twig', array("errors" => $errors, "program" => $program));
+            }
         }
 
         // store the record in db
-        $program->persist();
+        $persist = $program->persist();
+
+        if ($isXML) {
+            if ($persist) {
+                return "program persisted";
+            } else {
+                return "failed to persist";
+            }
+        }
 
         return $this->app->redirect('/programs.html');
     }

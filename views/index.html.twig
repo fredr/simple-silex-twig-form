@@ -9,7 +9,7 @@
         <a href="/programs.html">List programs</a>
     </p>
 
-    <form action="/program" method="post">
+    <form action="/program" method="post" enctype="application/x-www-form-urlencoded">
         <p>{{ forms.textinput('Date', 'date', program.date|default("")) }}<span class="err">{{ errors.date|default("") }}</span></p>
         <p>{{ forms.textinput('Start time', 'time', program.time|default(""), 10) }}<span class="err">{{ errors.time|default("") }}</span></p>
         <p>{{ forms.textarea('Lead text', 'leadText', program.leadText|default("")) }}<span class="err">{{ errors.leadText|default("") }}</span></p>

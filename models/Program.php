@@ -21,8 +21,8 @@ class Program implements IModel
     private $minutesFromMidnight;
     private $dateAsDateAsDatetime;
 
-
     private $database;
+
 
     function __construct($database) {
         $this->database = $database;
