@@ -7,6 +7,8 @@
  *
  */
 
+require_once __DIR__."/controllers/ProgramController.php";
+
 /**
  * Silex instance
  */
@@ -19,7 +21,8 @@ $app = require __DIR__ . "/bootstrap.php";
  * Displays the program input form
  */
 $app->get('/', function() use ($app) {
-    return $app['twig']->render('index.html.twig', array());
+    $controller = new ProgramController($app);
+    return $controller->Programs();
 });
 
 
@@ -38,7 +41,8 @@ $app->get('/programs', function() use($app) {
  * Adds a program to the DB
  */
 $app->post('/program', function() use($app) {
-    // TODO: add program
+    $controller = new ProgramController($app);
+    return $controller->AddProgram();
 });
 
 

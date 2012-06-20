@@ -5,7 +5,7 @@ CREATE DATABASE IF NOT EXISTS `db_programs`;
 -- create the table
 CREATE TABLE IF NOT EXISTS `db_programs`.`program` (
 	`id` int NOT NULL AUTO_INCREMENT,
-	`date` date NOT NULL,
+	`date` datetime NOT NULL,
 	`time` int NOT NULL COMMENT 'Stored as minutes from midnight',
 	`leadtext` text NOT NULL,
 	`name` varchar(100) NOT NULL,

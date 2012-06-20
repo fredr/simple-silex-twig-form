@@ -7,8 +7,6 @@
 
 {% macro textarea(label, name, text, rows, cols) %}
      <label>{{ label|e }}<br />
-         <textarea name="{{ name }}" rows="{{ rows|default(4) }}" cols="{{ cols|default(30) }}">
-             {{ text|e }}
-         </textarea>
+         <textarea name="{{ name }}" rows="{{ rows|default(4) }}" cols="{{ cols|default(30) }}">{{ text|e }}</textarea>
      </label>
 {% endmacro %}

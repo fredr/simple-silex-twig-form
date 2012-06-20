@@ -6,13 +6,13 @@
 </head>
 <body>
     <form action="/program" method="post">
-        <p>{{ forms.textinput('Date', 'date') }}</p>
-        <p>{{ forms.textinput('Start time', 'start', '', 10) }}</p>
-        <p>{{ forms.textarea('Lead text', 'leadtext') }}</p>
-        <p>{{ forms.textinput('Name', 'name') }}</p>
-        <p>{{ forms.textinput('B-line', 'b-line', '', 40) }}</p>
-        <p>{{ forms.textarea('Synopsis', 'synopsis') }}</p>
-        <p>{{ forms.textinput('Url', 'url', 'http://', 40) }}</p>
+        <p>{{ forms.textinput('Date', 'date', program.date|default("")) }}<span class="err">{{ errors.date|default("") }}</span></p>
+        <p>{{ forms.textinput('Start time', 'time', program.time|default(""), 10) }}<span class="err">{{ errors.time|default("") }}</span></p>
+        <p>{{ forms.textarea('Lead text', 'leadText', program.leadText|default("")) }}<span class="err">{{ errors.leadText|default("") }}</span></p>
+        <p>{{ forms.textinput('Name', 'name', program.name|default("")) }}<span class="err">{{ errors.name|default("") }}</span></p>
+        <p>{{ forms.textinput('B-line', 'b-line', program.bLine|default(""), 40) }}<span class="err">{{ errors.bLine|default("") }}</span></p>
+        <p>{{ forms.textarea('Synopsis', 'synopsis', program.synopsis|default("")) }}<span class="err">{{ errors.synopsis|default("") }}</span></p>
+        <p>{{ forms.textinput('Url', 'url', program.url|default("http://"), 40) }}<span class="err">{{ errors.url|default("") }}</span></p>
 
         <input type="submit" value="Add" />
     </form>
