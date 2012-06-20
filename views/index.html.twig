@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
+    <p>
+        <a href="/programs.html">List programs</a>
+    </p>
+
     <form action="/program" method="post">
         <p>{{ forms.textinput('Date', 'date', program.date|default("")) }}<span class="err">{{ errors.date|default("") }}</span></p>
         <p>{{ forms.textinput('Start time', 'time', program.time|default(""), 10) }}<span class="err">{{ errors.time|default("") }}</span></p>
