@@ -88,6 +88,7 @@ class ProgramController extends ControllerBase
 
     /**
      * Deletes the record and redirects to the list
+     * @param $id the program entries database id
      * @return view
      */
     public function DeleteProgram($id) {
@@ -101,6 +102,13 @@ class ProgramController extends ControllerBase
         return $this->app->redirect('/programs.html');
     }
 
+    /**
+     * Gets program list from database
+     * @param $format html|xml
+     * @param $page page number
+     * @param $size page size
+     * @return view
+     */
     public function Programs($format, $page, $size) {
 
         // make sure we have a valid format

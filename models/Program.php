@@ -174,7 +174,7 @@ class Program implements IModel
 
     /**
      * Converts minutes from midnight to a readable time string (i.e 12:30)
-     * @param $minutes
+     * @param $minutes minutes from midnight
      * @return string
      */
     private function convertMinutesFromMidnightToString($minutes) {
