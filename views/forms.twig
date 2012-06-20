@@ -1,0 +1,14 @@
+{% macro textinput(label, name, value, size) %}
+    <label>{{ label|e }}<br />
+        <input type="text" name="{{ name }}" value="{{ value|e }}" size="{{ size|default(20) }}" />
+    </label>
+{% endmacro %}
+
+
+{% macro textarea(label, name, text, rows, cols) %}
+     <label>{{ label|e }}<br />
+         <textarea name="{{ name }}" rows="{{ rows|default(4) }}" cols="{{ cols|default(30) }}">
+             {{ text|e }}
+         </textarea>
+     </label>
+{% endmacro %}
