@@ -64,17 +64,37 @@ class ProgramController extends ControllerBase
         return $this->app->redirect('/programs.html');
     }
 
-    public function Programs($format = "html") {
+    public function Programs($format, $page, $size) {
 
         // make sure we have a valid format
         if ($format != "html" && $format != "xml") {
             $format = "html";
         }
 
-        $program = new Program($this->app["db"]);
-        $programs = $program->fetch();
+        // make sure we have valid page and size
+        if (!is_numeric($page)) $page = 1;
+        if (!is_numeric($size)) $size = 10;
+        if ($page < 1) $page = 1;
+        if ($size < 1) $size = 1;
 
-        return $this->app['twig']->render("programs.$format.twig", array("programs" => $programs));
+        $program = new Program($this->app["db"]);
+        $data = $program->fetch($page, $size);
+
+        $programs = $data["programs"];
+        $paging = $data["paging"];
+
+
+        // set paging URLs
+        if ($paging["next"] != null) {
+            $paging["next"] = "/programs.$format/{$paging["next"]}/$size";
+        }
+        if ($paging["prev"] != null) {
+            $paging["prev"] = "/programs.$format/{$paging["prev"]}/$size";
+        }
+
+
+
+        return $this->app['twig']->render("programs.$format.twig", array("programs" => $programs, "paging" => $paging));
 
     }
 }

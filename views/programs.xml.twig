@@ -12,3 +12,11 @@
     </program>
 {% endfor %}
 </programs>
+<paging>
+    {% if paging.prev != NULL %}
+    <prev>{{ paging.prev }}</prev>
+    {% endif %}
+    {% if paging.next != NULL %}
+    <next>{{ paging.next }}</next>
+    {% endif %}
+</paging>

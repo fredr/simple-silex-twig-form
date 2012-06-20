@@ -133,9 +133,31 @@ class Program implements IModel
     /**
      * Returns an array with programs from the database
      */
-    public function fetch() {
+    public function fetch($page, $size) {
 
-        $result = $this->database->fetchAll("SELECT `id`, `date`, `time`, `leadText`, `name`, `bLine`, `synopsis`, `url` FROM program ORDER BY `date` DESC;",array());
+        $start = ($page - 1) * $size;
+        $count = $size;
+
+
+        // calculate if there is a next page and a previous page
+        $totalRecords = $this->database->fetchColumn("SELECT COUNT(`id`) FROM program;", array());
+        $numberOfPages = ceil($totalRecords / $size);
+
+        $paging = array(
+            "next" => null,
+            "prev" => null,
+        );
+
+        if ($numberOfPages > $page) {
+            $paging["next"] = $page + 1;
+        }
+
+        if ($page > 1) {
+            $paging["prev"] = $page - 1;
+        }
+
+
+        $result = $this->database->fetchAll("SELECT `id`, `date`, `time`, `leadText`, `name`, `bLine`, `synopsis`, `url` FROM program ORDER BY `date` DESC LIMIT $start, $count;",array());
 
         /* Convert to readable times */
         foreach($result as &$program) {
@@ -143,7 +165,10 @@ class Program implements IModel
             $program["time"] = $this->convertMinutesFromMidnightToString($program["time"]);
         }
 
-        return $result;
+        return array(
+            "programs" => $result,
+            "paging" => $paging,
+        );
     }
 
 

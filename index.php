@@ -25,16 +25,18 @@ $app->get('/', function() use ($app) {
 });
 
 /**
- * GET '/programs.{format}'
+ * GET '/programs.{format}/{page}/{size}'
  * format = html|xml
+ * page = page number
+ * size = number of entries per page
  * Displays a list of programs as html or xml
  */
-$app->get('/programs.{format}/{page}', function($format) use($app) {
+$app->get('/programs.{format}/{page}/{size}', function($format, $page, $size) use($app) {
 
     $controller = new ProgramController($app);
-    return $controller->Programs($format);
+    return $controller->Programs($format, $page, $size);
 
-})->value("format", "html")->value("page", "1");
+})->value("format", "html")->value("page", "1")->value("size", "10");
 
 /**
  * POST '/program'

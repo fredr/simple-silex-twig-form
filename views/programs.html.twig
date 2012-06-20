@@ -45,5 +45,13 @@
         {% endfor %}
     </table>
 
+    {% if paging.prev != NULL %}
+    <a href="{{ paging.prev }}">Previous</a>&nbsp;&nbsp;
+    {% endif %}
+
+    {% if paging.next != NULL %}
+    <a href="{{ paging.next }}">Next</a>
+    {% endif %}
+
 </body>
 </html>
