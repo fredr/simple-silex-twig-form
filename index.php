@@ -15,26 +15,26 @@ require_once __DIR__."/controllers/ProgramController.php";
 $app = require __DIR__ . "/bootstrap.php";
 
 
-
 /**
  * GET '/'
  * Displays the program input form
  */
 $app->get('/', function() use ($app) {
     $controller = new ProgramController($app);
-    return $controller->Programs();
+    return $controller->Index();
 });
-
 
 /**
- * GET '/programs'
+ * GET '/programs.{format}'
+ * format = html|xml
  * Displays a list of programs as html or xml
  */
-$app->get('/programs', function() use($app) {
-    // TODO: list programs
-    // HTML && XML
-});
+$app->get('/programs.{format}/{page}', function($format) use($app) {
 
+    $controller = new ProgramController($app);
+    return $controller->Programs($format);
+
+})->value("format", "html")->value("page", "1");
 
 /**
  * POST '/program'
@@ -52,7 +52,8 @@ $app->post('/program', function() use($app) {
  * GET request is used instead of DELETE since not all web browsers support other than GET/POST
  */
 $app->get('/delete-program/{id}', function($id) use($app) {
-    // TODO: delete program
+    $controller = new ProgramController($app);
+    return $controller->DeleteProgram($id);
 });
 
 

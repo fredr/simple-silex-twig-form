@@ -45,6 +45,41 @@ class Program implements IModel
     }
 
     /**
+     * Load a record from db
+     */
+    public function load($id) {
+        $result = $this->database->fetchAll("SELECT `date`, `time`, `leadText`, `name`, `bLine`, `synopsis`, `url`
+                                                     FROM `program` WHERE `id` = ? LIMIT 1;",
+                                            array(
+                                                $id,
+                                            )
+        );
+
+        $program = (count($result) == 1 ? $result[0] : NULL);
+
+        // if we didn't fetch anything, return false
+        if ($program == NULL) return false;
+
+        $this->id = $id;
+        $this->date = $program["date"];
+        $this->time = $program["time"];
+        $this->leadText = $program["leadText"];
+        $this->name = $program["name"];
+        $this->bLine = $program["bLine"];
+        $this->synopsis = $program["synopsis"];
+        $this->url = $program["url"];
+
+        return true;
+    }
+
+    /**
+     * Remove currently loaded entity from db
+     */
+    public function remove() {
+        $this->database->delete("program", array("id" => $this->id));
+    }
+
+    /**
      * Checks the input
      * @return array with errors
      */
@@ -84,6 +119,29 @@ class Program implements IModel
         }
 
         return $errors;
+    }
+
+
+    /**
+     * Returns an array with programs from the database
+     */
+    public function fetch() {
+
+        $result = $this->database->fetchAll("SELECT `id`, `date`, `time`, `leadText`, `name`, `bLine`, `synopsis`, `url` FROM program ORDER BY `date` DESC;",array());
+
+        /* Convert times */
+        foreach($result as &$program) {
+            $hour = (int)($program["time"]/60);
+            $minute = (int)($program["time"] - ($hour*60));
+
+            // pad with zeros i.e 01:05
+            if ($hour < 10) $hour = "0$hour";
+            if ($minute < 10) $minute = "0$minute";
+
+            $program["time"] = "$hour:$minute";
+        }
+
+        return $result;
     }
 
 }

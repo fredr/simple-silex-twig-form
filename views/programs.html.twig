@@ -1,0 +1,42 @@
+<html>
+<head>
+    <title>Programs</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+    <table>
+        {% for program in programs %}
+        <tr>
+            <td>Date</td>
+            <td>{{ program.date|e }}</td>
+        </tr>
+        <tr>
+            <td>Time</td>
+            <td>{{ program.time|e }}</td>
+        </tr>
+        <tr>
+            <td>Lead text</td>
+            <td>{{ program.leadText|e }}</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>{{ program.name|e }}</td>
+        </tr>
+        <tr>
+            <td>B-Line</td>
+            <td>{{ program.bLine|e }}</td>
+        </tr>
+        <tr>
+            <td>Synopsis</td>
+            <td>{{ program.synopsis|e }}</td>
+        </tr>
+        <tr>
+            <td>Url</td>
+            <td>{{ program.url|e }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>

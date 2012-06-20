@@ -14,7 +14,7 @@ class ProgramController extends ControllerBase
      * Renders the input form
      * @return view
      */
-    public function Programs() {
+    public function Index() {
         return $this->app['twig']->render('index.html.twig', array("errors" => array(), "program" => array()));
     }
 
@@ -38,6 +38,7 @@ class ProgramController extends ControllerBase
         // check for errors
         $errors = $program->validate();
 
+        // show the form again if there where errors (and show what the errors where)
         if (count($errors) > 0) {
             return $this->app['twig']->render('index.html.twig', array("errors" => $errors, "program" => $program));
         }
@@ -45,7 +46,35 @@ class ProgramController extends ControllerBase
         // store the record in db
         $program->persist();
 
-        return $this->app->redirect('/programs');
+        return $this->app->redirect('/programs.html');
+    }
+
+    /**
+     * Deletes the record and redirects to the list
+     * @return view
+     */
+    public function DeleteProgram($id) {
+
+        $program = new Program($this->app["db"]);
+
+        // load the program and delete it
+        $program->load($id);
+        $program->remove();
+
+        return $this->app->redirect('/programs.html');
+    }
+
+    public function Programs($format = "html") {
+
+        // make sure we have a valid format
+        if ($format != "html" && $format != "xml") {
+            $format = "html";
+        }
+
+        $program = new Program($this->app["db"]);
+        $programs = $program->fetch();
+
+        return $this->app['twig']->render("programs.$format.twig", array("programs" => $programs));
 
     }
 }

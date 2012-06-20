@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<programs>
+{% for program in programs %}
+    <program>
+        <date>{{ program.date|e }}</date>
+        <start_time>{{ program.time|e }}</start_time>
+        <leadtext>{{ program.leadText|e }}</leadtext>
+        <name>{{ program.name|e }}</name>
+        <b-line>{{ program.bLine|e }}</b-line>
+        <synopsis>{{ program.synopsis|e }}</synopsis>
+        <url>{{ program.url|e }}</url>
+    </program>
+{% endfor %}
+</programs>

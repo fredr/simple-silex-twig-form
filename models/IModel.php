@@ -8,4 +8,6 @@
 interface IModel {
     public function validate();
     public function persist();
+    public function remove();
+    public function load($id);
 }
