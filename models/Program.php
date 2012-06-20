@@ -33,6 +33,14 @@ class Program implements IModel
      * Persists this program to the database
      */
     public function persist() {
+
+        $errors = $this->validate();
+
+        // if this doesn't validate, abort.
+        if (count($errors) > 0) {
+            return false;
+        }
+
         return $this->database->insert("program", array(
             "date"      => $this->dateAsDateAsDatetime,
             "time"      => $this->minutesFromMidnight,
@@ -60,14 +68,14 @@ class Program implements IModel
         // if we didn't fetch anything, return false
         if ($program == NULL) return false;
 
-        $this->id = $id;
-        $this->date = $program["date"];
-        $this->time = $program["time"];
+        $this->id       = $id;
+        $this->date     = $program["date"];
+        $this->time     = $this->convertMinutesFromMidnightToString($program["time"]);
         $this->leadText = $program["leadText"];
-        $this->name = $program["name"];
-        $this->bLine = $program["bLine"];
+        $this->name     = $program["name"];
+        $this->bLine    = $program["bLine"];
         $this->synopsis = $program["synopsis"];
-        $this->url = $program["url"];
+        $this->url      = $program["url"];
 
         return true;
     }
@@ -129,19 +137,30 @@ class Program implements IModel
 
         $result = $this->database->fetchAll("SELECT `id`, `date`, `time`, `leadText`, `name`, `bLine`, `synopsis`, `url` FROM program ORDER BY `date` DESC;",array());
 
-        /* Convert times */
+        /* Convert to readable times */
         foreach($result as &$program) {
-            $hour = (int)($program["time"]/60);
-            $minute = (int)($program["time"] - ($hour*60));
 
-            // pad with zeros i.e 01:05
-            if ($hour < 10) $hour = "0$hour";
-            if ($minute < 10) $minute = "0$minute";
-
-            $program["time"] = "$hour:$minute";
+            $program["time"] = $this->convertMinutesFromMidnightToString($program["time"]);
         }
 
         return $result;
+    }
+
+
+    /**
+     * Converts minutes from midnight to a readable time string (i.e 12:30)
+     * @param $minutes
+     * @return string
+     */
+    private function convertMinutesFromMidnightToString($minutes) {
+        $hour = (int)($minutes/60);
+        $minute = (int)($minutes - ($hour*60));
+
+        // pad with zeros i.e 01:05
+        if ($hour < 10) $hour = "0$hour";
+        if ($minute < 10) $minute = "0$minute";
+
+        return "$hour:$minute";
     }
 
 }
